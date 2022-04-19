@@ -36,9 +36,13 @@ umount -f /home
 
 xfs_quota -x -c 'report -h' /home
 
+For single User
 xfs_quota -x -c 'limit bsoft=9G bhard=10G thin51' /home
 
-
+For Bulk Users
 for i in {51..110}; do xfs_quota -x -c 'limit bsoft=9G bhard=10G thin'$i /home; done;
+
+For check user/Group Quota for Block and Inodes
+xfs_quota -x -c 'report -bih' /home
 
 
