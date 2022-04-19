@@ -25,11 +25,13 @@ mount | grep  /home
 
 If quota not enabled -
 umount /home
+umount -f /home
 mount -a
 
 
 If Target Busy during Umount
 for i in {51..110}; do killall -u thin$i; done;
+umount -f /home
 
 
 xfs_quota -x -c 'report -h' /home
