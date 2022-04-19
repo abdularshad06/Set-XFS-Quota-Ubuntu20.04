@@ -1,0 +1,42 @@
+
+
+sudo apt install quota xfsprogs -y
+
+quota --version
+
+find /lib/modules/`uname -r` -type f -name '*quota_v*.ko*'
+
+sudo apt install linux-image-extra-virtual -y
+
+sudo vim /etc/fstab
+
+UUID=ddd55e04-f815-48d9-8750-3f422048abd0 /home           xfs     defaults,uquota,gquota        0       0
+or
+/dev/sda5       /home           xfs     defaults,uquota,gquota  0       0
+
+
+mount -a
+
+
+mount | grep  /home
+/dev/sda5 on /home type xfs (rw,relatime,attr2,inode64,logbufs=8,logbsize=256k,sunit=512,swidth=1024,usrquota,grpquota)
+
+
+
+If quota not enabled -
+umount /home
+mount -a
+
+
+If Target Busy during Umount
+for i in {51..110}; do killall -u thin$i; done;
+
+
+xfs_quota -x -c 'report -h' /home
+
+xfs_quota -x -c 'limit bsoft=9G bhard=10G thin51' /home
+
+
+for i in {51..110}; do xfs_quota -x -c 'limit bsoft=9G bhard=10G thin'$i /home; done;
+
+
